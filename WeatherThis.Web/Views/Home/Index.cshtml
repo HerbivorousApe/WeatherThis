@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>
+        @WeatherThis.Common.Models.LocalValuesModel.City, @WeatherThis.Common.Models.LocalValuesModel.State
+    </p>
+    @if (WeatherThis.Common.Models.LocalValuesModel.IsImperial)
+    {<p>Imperial</p> }
+    else
+    { <p>Metric</p>}
+
+
+    @{
+        var infoReturn = WeatherThis.Web.Program.TestCon();
+
+        var current = infoReturn.Features[0].Properties;
+
+        var temp = Math.Round(Convert.ToDecimal(WeatherThis.Common.Controllers.UnitConverterController.ConvertCelsiusToFahrenheit(current.Temperature.Value)));
+        var dew = Math.Round(Convert.ToDecimal(WeatherThis.Common.Controllers.UnitConverterController.ConvertCelsiusToFahrenheit(current.Dewpoint.Value)));
+        var wind = Math.Round(Convert.ToDecimal(WeatherThis.Common.Controllers.UnitConverterController.ConvertKilometerToMile(current.WindSpeed.Value)));
+        var windDir = WeatherThis.Common.Controllers.UnitConverterController.ConvertDegreeToDirection(current.WindDirection.Value);
+        var humidity = Math.Round(Convert.ToDecimal(current.RelativeHumidity.Value));
+    }
+
+    <p>Current Temperature: @temp</p>
+    <p>Current Dewpoint: @dew</p>
+    <p>Current Wind Speed: @wind</p>
+    <p>Current Wind Direction: @windDir</p>
+    <p>Current Humidity: @humidity%</p>
+
+</div>

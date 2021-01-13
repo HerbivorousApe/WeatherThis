@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30717.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherThis.ConsoleApp", "WeatherThis.Console\WeatherThis.ConsoleApp.csproj", "{407234DC-44A1-407E-A3A8-99500D97BBCE}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WeatherThis.Common", "WeatherThis.Common\WeatherThis.Common.csproj", "{407B1DB4-1B61-45A4-9BA3-75227F2C289A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WeatherThis.Web", "WeatherThis.Web\WeatherThis.Web.csproj", "{AB3AA177-6F55-4B4C-B66E-D20FBD22EE4F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{407B1DB4-1B61-45A4-9BA3-75227F2C289A} = {407B1DB4-1B61-45A4-9BA3-75227F2C289A}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{407234DC-44A1-407E-A3A8-99500D97BBCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407234DC-44A1-407E-A3A8-99500D97BBCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407234DC-44A1-407E-A3A8-99500D97BBCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407234DC-44A1-407E-A3A8-99500D97BBCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{407B1DB4-1B61-45A4-9BA3-75227F2C289A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{407B1DB4-1B61-45A4-9BA3-75227F2C289A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{407B1DB4-1B61-45A4-9BA3-75227F2C289A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{407B1DB4-1B61-45A4-9BA3-75227F2C289A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB3AA177-6F55-4B4C-B66E-D20FBD22EE4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB3AA177-6F55-4B4C-B66E-D20FBD22EE4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB3AA177-6F55-4B4C-B66E-D20FBD22EE4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB3AA177-6F55-4B4C-B66E-D20FBD22EE4F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1EA5ADD6-0DEA-47D7-B989-AE92979B0130}
+	EndGlobalSection
+EndGlobal
