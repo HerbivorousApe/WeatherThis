@@ -2,22 +2,46 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
+@{ 
+    var currentObservationFetch = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherThis.Common.Models.CurrentObservationModel>
+        (WeatherThis.Common.Models.LocalValuesModel.CurrentObservation);
+    var sevenDayForecastMetricFetch = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherThis.Common.Models.SevenDayForecastModel>
+        (WeatherThis.Common.Models.LocalValuesModel.SevenDayForecast);
+    var sevenDayForecastImperialFetch = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherThis.Common.Models.SevenDayForecastModel>
+        (WeatherThis.Common.Models.LocalValuesModel.SevenDayForecastImperial);
+    var sevenDayForecastHourlyFetch = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherThis.Common.Models.SevenDayForecastHourlyModel>
+        (WeatherThis.Common.Models.LocalValuesModel.SevenDayForecastHourly);
+    var sevenDayForecastHistoryFetch = Newtonsoft.Json.JsonConvert.DeserializeObject<WeatherThis.Common.Models.SevenDayHistoryHourlyModel>
+        (WeatherThis.Common.Models.LocalValuesModel.CurrentObservation);
+
+    List<SevenDayForecastPeriods> sdf;
+
+    if (LocalValuesModel.IsImperial)
+    {
+        sdf = sevenDayForecastImperialFetch.Properties.Periods;
+    }
+    else
+    {
+        sdf = sevenDayForecastMetricFetch.Properties.Periods;
+    }
+}
+
+
+
+<div>
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
     <p>
-        @WeatherThis.Common.Models.LocalValuesModel.City, @WeatherThis.Common.Models.LocalValuesModel.State
+       Reporting from: @WeatherThis.Common.Models.LocalValuesModel.City, @WeatherThis.Common.Models.LocalValuesModel.State
     </p>
     @if (WeatherThis.Common.Models.LocalValuesModel.IsImperial)
     {<p>Imperial</p> }
     else
     { <p>Metric</p>}
 
+    
 
     @{
-        var infoReturn = WeatherThis.Web.Program.TestCon();
-
-        var current = infoReturn.Features[0].Properties;
+        var current = currentObservationFetch.Features[0].Properties;
 
         var temp = Math.Round(Convert.ToDecimal(WeatherThis.Common.Controllers.UnitConverterController.ConvertCelsiusToFahrenheit(current.Temperature.Value)));
         var dew = Math.Round(Convert.ToDecimal(WeatherThis.Common.Controllers.UnitConverterController.ConvertCelsiusToFahrenheit(current.Dewpoint.Value)));
@@ -32,4 +56,44 @@
     <p>Current Wind Direction: @windDir</p>
     <p>Current Humidity: @humidity%</p>
 
+    <h2>Six Day Forecast</h2>
+    
+
+        @{
+            var secondloop = 0;
+            for (var row = 0; row < 2; row++)
+            {
+            <div class="container-fluid row">
+
+                @for (var i = 0; i < 6; i++)
+                {
+                <div class="col-sm-2 text-center weather-block">
+                    <strong>@sdf[i + secondloop].Name</strong><br />
+                    <img src="@sdf[i + secondloop].Icon" class="weather-img" /><br />
+                    @sdf[i + secondloop].ShortForecast<br />
+                    @sdf[i + secondloop].Temperature°@sdf[i + secondloop].TemperatureUnit<br />
+                    WND: @sdf[i + secondloop].WindDirection @sdf[i + secondloop].WindSpeed
+
+                </div>
+                }
+
+                @{secondloop = 6; }
+            </div>
+            }
+        }
+
+
+            
+
+    <h2>Seven Day Forecast</h2>
+    <ul>
+        @{
+            for (var i = 0; i < sdf.Count; i++)
+            {
+                <li><strong>@sdf[i].Name</strong> - @sdf[i].DetailedForecast</li>
+            }
+        }
+    </ul>
+
 </div>
+d

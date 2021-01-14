@@ -9,7 +9,7 @@ namespace WeatherThis.Common.Controllers
     public class APICallsController
     {
 
-        public static async Task GetCoordsFromZip(string zip) // link = http://api.zippopotam.us/us/36695
+        public static async Task<CoordsFromZipModel> GetCoordsFromZip(string zip) // link = http://api.zippopotam.us/us/36695
         {
                 var client = new HttpClient();
                 var response = await client.GetStringAsync($"http://api.zippopotam.us/us/{zip}");
@@ -20,6 +20,7 @@ namespace WeatherThis.Common.Controllers
                 LocalValuesModel.City = infoReturn.Places[0].PlaceName;
                 LocalValuesModel.State = infoReturn.Places[0].State;
 
+            return infoReturn;
         }
 
         public static async Task GetGeoDataFromIP() // link = http://ip-api.com/json/2600:1700:c910:1900::43?fields=regionName,city,district,zip,lat,lon
@@ -53,32 +54,35 @@ namespace WeatherThis.Common.Controllers
             LocalValuesModel.ForecastZone = infoReturn.Properties.ForecastZone.Replace("https://api.weather.gov/zones/forecast/", "");
         }
 
-        public static async Task GetAlertData() //https://api.weather.gov/alerts?active=true&status=actual
+        public static async Task<AlertsModel> GetAlertData() //https://api.weather.gov/alerts?active=true&status=actual
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "SlackShack");
             var link = $"https://api.weather.gov/alerts?active=true&status=actual&zone={LocalValuesModel.ForecastZone}";
             var response = await client.GetStringAsync(link);
 
+            AlertsModel infoReturn = JsonConvert.DeserializeObject<AlertsModel>(response);
+
             LocalValuesModel.Alerts = response;
+
+            return infoReturn;
         }
 
         public static async Task GetSevenDayForecast() // apiLink = https://api.weather.gov/gridpoints/MOB/44,64/forecast?units=si
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "SlackShack");
+            
             var link = LocalValuesModel.SevenDayForecastLink + "?units=si";
             var response = await client.GetStringAsync(link);
-
             LocalValuesModel.SevenDayForecast = response;
 
             link = LocalValuesModel.SevenDayForecastLink;
             var responseImperial = await client.GetStringAsync(link);
-
             LocalValuesModel.SevenDayForecastImperial = responseImperial;
         }
 
-        public static async Task GetSevenDayForecastHourly() // link = https://api.weather.gov/gridpoints/MOB/44,64/forecast/hourly?units=si
+        public static async Task<SevenDayForecastHourlyModel> GetSevenDayForecastHourly() // link = https://api.weather.gov/gridpoints/MOB/44,64/forecast/hourly?units=si
         {
             HttpClient client = new HttpClient();
             client.DefaultRequestHeaders.Add("User-Agent", "SlackShack");
@@ -86,10 +90,14 @@ namespace WeatherThis.Common.Controllers
             var link = LocalValuesModel.SevenDayForecastLink + "/hourly?units=si";
             var response = await client.GetStringAsync(link);
 
+            SevenDayForecastHourlyModel infoReturn = JsonConvert.DeserializeObject<SevenDayForecastHourlyModel>(response);
+
             LocalValuesModel.SevenDayForecastHourly = response;
+
+            return infoReturn;
         }
 
-        public static async Task GetCurrentObservationData()  // link = https://api.weather.gov/stations/KMOB/observations
+        public static async Task<CurrentObservationModel> GetCurrentObservationData()  // link = https://api.weather.gov/stations/KMOB/observations
         {
             HttpClient client = new HttpClient();
             var link = $"https://api.weather.gov/stations/{LocalValuesModel.RadarStation}/observations";
@@ -97,11 +105,15 @@ namespace WeatherThis.Common.Controllers
             client.DefaultRequestHeaders.Add("User-Agent", "SlackShack");
             var response = await client.GetStringAsync(link);
 
+            CurrentObservationModel infoReturn = JsonConvert.DeserializeObject<CurrentObservationModel>(response);
+
             LocalValuesModel.CurrentObservation = response;
+
+            return infoReturn;
         }
 
 
-        public static async Task GetCurrentObservationStations()  // link = https://api.weather.gov/gridpoints/MOB/44,65/stations
+        public static async Task<ObservationStationModel> GetCurrentObservationStations()  // link = https://api.weather.gov/gridpoints/MOB/44,65/stations
         {
             HttpClient client = new HttpClient();
             var link = LocalValuesModel.ObservationStationLink;
@@ -112,6 +124,8 @@ namespace WeatherThis.Common.Controllers
             ObservationStationModel infoReturn = JsonConvert.DeserializeObject<ObservationStationModel>(response);
 
             LocalValuesModel.RadarStation = infoReturn.Features[0].Properties.StationIdentifier;
+
+            return infoReturn;
             
         }
     }
