@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WeatherThis.Web.Models;
+using WeatherThis.Web.Controllers;
 
 namespace WeatherThis.Web.Controllers
 {
@@ -32,6 +33,12 @@ namespace WeatherThis.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public ActionResult ButtonClick()
+        {
+            Common.Controllers.MiscController.FlipIsImperial();
+            return View("Index");
         }
     }
 }

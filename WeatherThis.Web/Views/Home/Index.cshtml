@@ -15,28 +15,36 @@
         (WeatherThis.Common.Models.LocalValuesModel.CurrentObservation);
 
     List<SevenDayForecastPeriods> sdf;
+    string unitSystem, unitSystemButtonValue;
 
     if (LocalValuesModel.IsImperial)
     {
         sdf = sevenDayForecastImperialFetch.Properties.Periods;
+        unitSystemButtonValue = "Switch to Metric";
+        unitSystem = "Imperial";
     }
     else
     {
         sdf = sevenDayForecastMetricFetch.Properties.Periods;
+        unitSystemButtonValue = "Switch to Imperial";
+        unitSystem = "Metric";
     }
 }
 
 
 
 <div>
-    <h1 class="display-4">Welcome</h1>
-    <p>
-       Reporting from: @WeatherThis.Common.Models.LocalValuesModel.City, @WeatherThis.Common.Models.LocalValuesModel.State
-    </p>
-    @if (WeatherThis.Common.Models.LocalValuesModel.IsImperial)
-    {<p>Imperial</p> }
-    else
-    { <p>Metric</p>}
+    <h1 class="display-4">Weather This</h1>
+    <div class="container-fluid row">
+        <div class="col-sm-6">
+            Reporting from: @WeatherThis.Common.Models.LocalValuesModel.City, @WeatherThis.Common.Models.LocalValuesModel.State
+            <!--Zipcode Modal Button-->
+        </div>
+        <div class="col-sm-6" style="display: flex; flex-wrap: wrap; justify-self:right">
+            System of Units: @unitSystem @using (Html.BeginForm("ButtonClick", "Home"))
+            {<input type="submit" class="btn btn-primary btn-sm" value="@unitSystemButtonValue" />}
+        </div>
+    </div>
 
     
 
@@ -50,40 +58,44 @@
         var humidity = Math.Round(Convert.ToDecimal(current.RelativeHumidity.Value));
     }
 
-    <p>Current Temperature: @temp</p>
-    <p>Current Dewpoint: @dew</p>
-    <p>Current Wind Speed: @wind</p>
+    <p>Current Temperature: @temp@LocalValuesModel.TempEnd</p>
+    <p>Current Dewpoint: @dew@LocalValuesModel.TempEnd</p>
+    <p>Current Wind Speed: @wind@LocalValuesModel.SpeedEnd</p>
     <p>Current Wind Direction: @windDir</p>
     <p>Current Humidity: @humidity%</p>
 
-    <h2>Six Day Forecast</h2>
-    
 
-        @{
-            var secondloop = 0;
-            for (var row = 0; row < 2; row++)
-            {
+
+    <!--Alert Data-->
+
+
+    <h2>Six Day Forecast</h2>
+
+    @{
+        var secondloop = 0;
+        for (var row = 0; row < 2; row++)
+        {
             <div class="container-fluid row">
 
                 @for (var i = 0; i < 6; i++)
                 {
-                <div class="col-sm-2 text-center weather-block">
-                    <strong>@sdf[i + secondloop].Name</strong><br />
-                    <img src="@sdf[i + secondloop].Icon" class="weather-img" /><br />
-                    @sdf[i + secondloop].ShortForecast<br />
-                    @sdf[i + secondloop].Temperature°@sdf[i + secondloop].TemperatureUnit<br />
-                    WND: @sdf[i + secondloop].WindDirection @sdf[i + secondloop].WindSpeed
+                    <div class="col-md-2 text-center weather-block">
+                        <strong>@sdf[i + secondloop].Name</strong><br />
+                        <img src="@sdf[i + secondloop].Icon" class="weather-img" title="@sdf[i + secondloop].Name - @sdf[i].DetailedForecast" alt="@sdf[i + secondloop].Name - @sdf[i].DetailedForecast" /><br />
+                        @sdf[i + secondloop].ShortForecast<br />
+                        @sdf[i + secondloop].Temperature°@sdf[i + secondloop].TemperatureUnit<br />
+                        WND: @sdf[i + secondloop].WindDirection @sdf[i + secondloop].WindSpeed
 
-                </div>
+                    </div>
                 }
 
                 @{secondloop = 6; }
             </div>
-            }
         }
+    }
 
 
-            
+
 
     <h2>Seven Day Forecast</h2>
     <ul>
@@ -96,4 +108,3 @@
     </ul>
 
 </div>
-d

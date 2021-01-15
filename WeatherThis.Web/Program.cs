@@ -24,15 +24,15 @@ namespace WeatherThis.Web
             await APICallsController.GetSevenDayForecast();
             await APICallsController.GetSevenDayForecastHourly();
 
-            TestCon();
+            //TestCon();
 
             CreateHostBuilder(args).Build().Run();
         }
 
-        public static CurrentObservationModel TestCon()
-        {
-            return JsonConvert.DeserializeObject<CurrentObservationModel>(LocalValuesModel.CurrentObservation);
-        }
+        //public static CurrentObservationModel TestCon()
+        //{
+        //    return JsonConvert.DeserializeObject<CurrentObservationModel>(LocalValuesModel.CurrentObservation);
+        //}
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
