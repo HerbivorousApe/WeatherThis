@@ -10,7 +10,7 @@ namespace WeatherThis.ConsoleApp.Views
         public static async Task GetGeoDataFromIP()
         {
             Console.WriteLine("");
-            Console.WriteLine("Loading IP from icanhazip.com and geodata from ip-api.com ...");
+            Console.WriteLine("Loading geodata from ip-api.com ...");
             await APICallsController.GetGeoDataFromIP();
         }
 

@@ -1,5 +1,7 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using WeatherThis.ConsoleApp.Views;
+using WeatherThis.Common.Models;
 
 namespace WeatherThis.ConsoleApp
 {

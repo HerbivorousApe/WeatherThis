@@ -14,6 +14,7 @@ namespace WeatherThis.Common.Models
         public static string City { get; set; }
         public static string State { get; set; }
         public static string ForecastZone { get; set; }
+        public static int RetryCount { get; set; } = 0;
 
         public static string CurrentObservation { get; set; }
         public static string SevenDayForecast { get; set; }

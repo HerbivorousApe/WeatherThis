@@ -36,17 +36,22 @@
 <div>
     <h1 class="display-4">Weather This</h1>
     <div class="container-fluid row">
-        <div class="col-sm-6">
-            Reporting from: @WeatherThis.Common.Models.LocalValuesModel.City, @WeatherThis.Common.Models.LocalValuesModel.State
+        <div class="col-sm-5 text-center">
+            Reporting from:  <strong>@WeatherThis.Common.Models.LocalValuesModel.City, @WeatherThis.Common.Models.LocalValuesModel.State</strong>
+        </div>
+        <div class="col-sm-1 text-center">
             <!--Zipcode Modal Button-->
         </div>
-        <div class="col-sm-6" style="display: flex; flex-wrap: wrap; justify-self:right">
-            System of Units: @unitSystem @using (Html.BeginForm("ButtonClick", "Home"))
+        <div class="col-sm-5 text-center">
+            System of Units:  <strong>@unitSystem</strong>
+        </div>
+        <div class="col-sm-1 text-center">
+            @using (Html.BeginForm("ButtonClick", "Home"))
             {<input type="submit" class="btn btn-primary btn-sm" value="@unitSystemButtonValue" />}
         </div>
     </div>
 
-    
+
 
     @{
         var current = currentObservationFetch.Features[0].Properties;
@@ -57,54 +62,78 @@
         var windDir = WeatherThis.Common.Controllers.UnitConverterController.ConvertDegreeToDirection(current.WindDirection.Value);
         var humidity = Math.Round(Convert.ToDecimal(current.RelativeHumidity.Value));
     }
+    <div class="container-fluid row">
+        <div class="col-sm text-center">
+            <i class="fas fa-thermometer-half"></i> Temperature: @temp@LocalValuesModel.TempEnd
+        </div>
+        <div class="col-sm text-center">
+            <i class="fas fa-tint"></i> Dewpoint: @dew@LocalValuesModel.TempEnd
+        </div>
+        <div class="col-sm text-center">
+            <i class="fas fa-wind"></i> Wind: @windDir @wind@LocalValuesModel.SpeedEnd
+        </div>
+        <div class="col-sm text-center">
+            <i class="fas fa-tint"></i> Humidity: @humidity%
+        </div>
+    </div>
 
-    <p>Current Temperature: @temp@LocalValuesModel.TempEnd</p>
-    <p>Current Dewpoint: @dew@LocalValuesModel.TempEnd</p>
-    <p>Current Wind Speed: @wind@LocalValuesModel.SpeedEnd</p>
-    <p>Current Wind Direction: @windDir</p>
-    <p>Current Humidity: @humidity%</p>
 
 
+            <!--Alert Data-->
 
-    <!--Alert Data-->
 
+            <h2>Seven Day Forecast</h2>
 
-    <h2>Six Day Forecast</h2>
-
-    @{
-        var secondloop = 0;
-        for (var row = 0; row < 2; row++)
-        {
-            <div class="container-fluid row">
-
-                @for (var i = 0; i < 6; i++)
+            <div id="sevendayforecast">
+                @for (var i = 0; i < sdf.Count; i++)
                 {
-                    <div class="col-md-2 text-center weather-block">
-                        <strong>@sdf[i + secondloop].Name</strong><br />
-                        <img src="@sdf[i + secondloop].Icon" class="weather-img" title="@sdf[i + secondloop].Name - @sdf[i].DetailedForecast" alt="@sdf[i + secondloop].Name - @sdf[i].DetailedForecast" /><br />
-                        @sdf[i + secondloop].ShortForecast<br />
-                        @sdf[i + secondloop].Temperature°@sdf[i + secondloop].TemperatureUnit<br />
-                        WND: @sdf[i + secondloop].WindDirection @sdf[i + secondloop].WindSpeed
+                    <div class="col-lg text-center weather-block">
+                        <strong>@sdf[i].Name</strong><br />
+                        <img src="@sdf[i].Icon" class="weather-img" title="@sdf[i].Name - @sdf[i].DetailedForecast" alt="@sdf[i].Name - @sdf[i].DetailedForecast" /><br />
+                        @sdf[i].ShortForecast<br />
+                        @sdf[i].Temperature°@sdf[i].TemperatureUnit<br />
+                        WND: @sdf[i].WindDirection @sdf[i].WindSpeed
 
                     </div>
                 }
-
-                @{secondloop = 6; }
             </div>
-        }
-    }
+
+
+
+            @*@{
+                var secondloop = 0;
+                for (var row = 0; row < 2; row++)
+                {
+                    <div class="container-fluid row">
+
+                        @for (var i = 0; i < 7; i++)
+                        {
+                            <div class="col-lg text-center weather-block">
+                                <strong>@sdf[i + secondloop].Name</strong><br />
+                                <img src="@sdf[i + secondloop].Icon" class="weather-img" title="@sdf[i + secondloop].Name - @sdf[i].DetailedForecast" alt="@sdf[i + secondloop].Name - @sdf[i].DetailedForecast" /><br />
+                                @sdf[i + secondloop].ShortForecast<br />
+                                @sdf[i + secondloop].Temperature°@sdf[i + secondloop].TemperatureUnit<br />
+                                WND: @sdf[i + secondloop].WindDirection @sdf[i + secondloop].WindSpeed
+
+                            </div>
+                        }
+
+                        @{secondloop = 6; }
+                    </div>
+                }
+            }*@
 
 
 
 
-    <h2>Seven Day Forecast</h2>
-    <ul>
-        @{
-            for (var i = 0; i < sdf.Count; i++)
-            {
-                <li><strong>@sdf[i].Name</strong> - @sdf[i].DetailedForecast</li>
-            }
-        }
-    </ul>
+            <h2>Seven Day Forecast</h2>
+            <ul>
+                @{
+                    for (var i = 0; i < sdf.Count; i++)
+                    {
+                        <li><strong>@sdf[i].Name</strong> - @sdf[i].DetailedForecast</li>
+                    }
+                }
+            </ul>
 
-</div>
+        </div>

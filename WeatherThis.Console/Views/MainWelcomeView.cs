@@ -105,14 +105,23 @@ namespace WeatherThis.ConsoleApp.Views
         {
             var infoReturn = JsonConvert.DeserializeObject<AlertsModel>(LocalValuesModel.Alerts);
 
-            foreach (var alert in infoReturn.Features)
+            //for (var i = 0; i < 20; i++) //test
+            for (var i = 0; i < infoReturn.Features.Count; i++)
             {
                 Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine($"*** {alert.Properties.Headline} ***");
+                Console.WriteLine($"*** {infoReturn.Features[i].Properties.Headline} ***");
                 Console.WriteLine("");
                 Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.WriteLine(alert.Properties.Description);
-                Console.WriteLine(alert.Properties.Instruction);
+                if (infoReturn.Features[i].Properties.Description is not null)
+                {
+                    Console.WriteLine(infoReturn.Features[i].Properties.Description.Replace("\n", " "));
+                    Console.WriteLine("");
+                }
+                if (infoReturn.Features[i].Properties.Instruction is not null)
+                {
+                    Console.WriteLine(infoReturn.Features[i].Properties.Instruction.Replace("\n", " "));
+                    Console.WriteLine("");
+                }
             }
         }
     }
